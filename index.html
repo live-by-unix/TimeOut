@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>EmbedPing — Simple Uptime Badge</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      margin: 40px auto;
+      max-width: 720px;
+      line-height: 1.6;
+      padding: 0 20px;
+    }
+    h1, h2, h3 {
+      font-weight: 700;
+    }
+    pre {
+      background: #f5f5f5;
+      padding: 14px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 14px;
+    }
+    code {
+      font-family: ui-monospace, monospace;
+    }
+    .demo-box {
+      margin-top: 20px;
+      padding: 20px;
+      border-radius: 10px;
+      background: #fafafa;
+      border: 1px solid #ddd;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>EmbedPing</h1>
+  <p>
+    <strong>EmbedPing</strong> is a tiny, zero‑config uptime badge you can embed on any website using a single
+    <code>&lt;script&gt;</code> tag.  
+    It pings your server every few seconds and shows a floating badge with live latency.
+  </p>
+
+  <hr>
+
+  <h2>🚀 Quick Start (CDN)</h2>
+  <p>Use the official CDN at <strong>https://timeout.pages.dev/timeout.js</strong></p>
+
+  <pre><code>&lt;script src="https://timeout.pages.dev/timeout.js"
+        data-url="https://yourserver.com"&gt;&lt;/script&gt;</code></pre>
+
+  <p>That's it. A floating badge will appear in the bottom‑right corner.</p>
+
+  <hr>
+
+  <h2>📦 Local Installation</h2>
+  <p>Download the two files:</p>
+
+  <pre><code>timeout.js
+timeout.css</code></pre>
+
+  <p>Then include them like this:</p>
+
+  <pre><code>&lt;link rel="stylesheet" href="timeout.css"&gt;
+&lt;script src="timeout.js" data-url="https://yourserver.com"&gt;&lt;/script&gt;</code></pre>
+
+  <hr>
+
+  <h2>⚙️ Configuration</h2>
+
+  <h3>Required</h3>
+  <ul>
+    <li><strong>data-url</strong> — the server to ping</li>
+  </ul>
+
+  <pre><code>&lt;script src="https://timeout.pages.dev/timeout.js"
+        data-url="https://api.example.com"&gt;&lt;/script&gt;</code></pre>
+
+  <h3>Optional Attributes</h3>
+
+  <ul>
+    <li><strong>data-position</strong> — <code>top-left</code>, <code>top-right</code>, <code>bottom-left</code>, <code>bottom-right</code></li>
+    <li><strong>data-theme</strong> — <code>light</code>, <code>dark</code>, <code>auto</code></li>
+    <li><strong>data-size</strong> — <code>sm</code>, <code>md</code>, <code>lg</code></li>
+    <li><strong>data-interval</strong> — ping interval in ms (default: 4000)</li>
+  </ul>
+
+  <h3>Example with all options:</h3>
+
+  <pre><code>&lt;script src="https://timeout.pages.dev/timeout.js"
+        data-url="https://yourserver.com"
+        data-position="top-left"
+        data-theme="dark"
+        data-size="lg"
+        data-interval="3000"&gt;&lt;/script&gt;</code></pre>
+
+  <hr>
+
+  <h2>🧪 Live Demo</h2>
+  <p>This demo pings <code>https://example.com</code> every 4 seconds.</p>
+
+  <div class="demo-box">
+    <script src="https://timeout.pages.dev/timeout.js"
+            data-url="https://example.com"
+            data-position="top-right"
+            data-theme="auto"
+            data-size="md"></script>
+  </div>
+
+  <hr>
+
+  <h2>📘 How It Works</h2>
+  <p>
+    EmbedPing uses a smart ping engine:
+  </p>
+
+  <ul>
+    <li>Tries <code>HEAD</code> request</li>
+    <li>Falls back to <code>no-cors</code> fetch</li>
+    <li>Falls back to <code>Image()</code> ping</li>
+  </ul>
+
+  <p>
+    This guarantees it works even on strict servers with CORS disabled.
+  </p>
+
+  <hr>
+
+  <h2>📝 License</h2>
+  <p>MIT License — free for personal and commercial use.</p>
+
+</body>
+</html>
