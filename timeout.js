@@ -1,6 +1,3 @@
-// timeout.js — EmbedPing (VieStatic-style)
-// AB, this is the whole engine in ONE FILE.
-
 (function () {
   const script = document.currentScript;
   const target = script.getAttribute("data-url");
