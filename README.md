@@ -1,37 +1,90 @@
-## Welcome to the TimeOut Project.   
-TImeOut is a fast, easy, no-cors, and reliable server ping widget which is easily embedable with a single '<script>' tag. 
-**This README covers CDN, configurations, local installation, and tech stack. Also covers licensing.**
+# TimeOut
 
-## CDN
-The cdn link is https://timeoutbadge.pages.dev/ and in order to implement the badge, try out this bare bones code in the '<head>' or '<body>' part of your website. 
-```js
+TimeOut is a lightweight, fast, and reliable server status badge that can be embedded into any website with a single script tag. It requires no CORS configuration and provides a simple way to monitor the availability of your server directly from your website.
+
+This README covers CDN usage, configuration options, local installation, the tech stack, licensing information, and a widget preview.
+
+## Features
+
+* Lightweight and dependency-free
+* No CORS configuration required
+* One-line installation
+* Customizable position, theme, and size
+* Adjustable ping interval
+* Self-hostable
+* Works in all modern browsers
+
+## Installation
+
+### CDN
+
+Add the following script tag anywhere in your `<head>` or `<body>`:
+
+```html
 <script src="https://timeoutbadge.pages.dev/timeout.js"
         data-url="https://yourserver.com"></script>
 ```
-That is a bare bones implementation. 
 
-## Configurations
-Required config:
-* data-url.
-The data-url config sets the exact URL timeout pings for.
-Not required config:
-* data-position
-The data-position arguement is the placement of the badge. The different placements are:
-* top-left
-* top-right
-* bottom-left
-* bottom-right
+This is the minimum required configuration.
 
-* data-theme
+## Configuration
 
-data-theme is the color of the widget. If you have data-theme set to auto, it will defualt to OS defualt. If you set it to light or dark, it will override the color into light or dark.
-* data-size
-It is a arguement for the size of the badge, with sm for small, md for medium, and lg for large.
-* data-interval
-The defualt interval for pinging (in ms). The defualt is 4000 ms.
+### Available Attributes
 
-A code block with all this config would look like
-```js
+| Attribute       | Required | Default        | Description                                   |
+| --------------- | -------- | -------------- | --------------------------------------------- |
+| `data-url`      | Yes      | —              | URL to monitor.                               |
+| `data-position` | No       | `bottom-right` | Controls where the badge appears on the page. |
+| `data-theme`    | No       | `auto`         | Controls the badge theme.                     |
+| `data-size`     | No       | `md`           | Controls the badge size.                      |
+| `data-interval` | No       | `4000`         | Ping interval in milliseconds.                |
+
+### `data-position`
+
+Determines where the badge appears.
+
+Supported values:
+
+* `top-left`
+* `top-right`
+* `bottom-left`
+* `bottom-right`
+
+### `data-theme`
+
+Controls the badge appearance.
+
+Supported values:
+
+* `auto` — Uses the operating system theme.
+* `light` — Forces the light theme.
+* `dark` — Forces the dark theme.
+
+### `data-size`
+
+Controls the badge size.
+
+Supported values:
+
+* `sm` — Small
+* `md` — Medium
+* `lg` — Large
+
+### `data-interval`
+
+Sets how often the server is checked.
+
+Example:
+
+```html
+data-interval="3000"
+```
+
+This checks the server every 3 seconds.
+
+### Full Configuration Example
+
+```html
 <script src="https://timeoutbadge.pages.dev/timeout.js"
         data-url="https://yourserver.com"
         data-position="top-left"
@@ -39,16 +92,40 @@ A code block with all this config would look like
         data-size="lg"
         data-interval="3000"></script>
 ```
-## Local installation
-To have a local installation, download the latest release from this repo, and then, a bare bones implementation would be
-```js
-<link rel="stylesheet" href="timeout.css">
-<script src="timeout.js" data-url="https://yourserver.com"></script>
-```
-## Tech stack 
-* CSS
-* HTML
-* JS
 
-## Licensing
-MIT License. 
+## Local Installation
+
+Download the latest release from this repository and include the files in your project:
+
+```html
+<link rel="stylesheet" href="timeout.css">
+
+<script src="timeout.js"
+        data-url="https://yourserver.com"></script>
+```
+
+## Tech Stack
+
+TimeOut is built with:
+
+* HTML
+* CSS
+* JavaScript
+
+## Browser Support
+
+TimeOut works in all modern browsers, including:
+
+* Google Chrome
+* Mozilla Firefox
+* Microsoft Edge
+* Safari
+* Any modern browser that supports JavaScript, CSS, and HTML
+
+## Preview
+
+<img width="358" height="337" alt="TimeOut Widget Preview" src="https://github.com/user-attachments/assets/7c635db6-67c3-4104-9435-21382cbe4f7e" />
+
+## License
+
+This project is licensed under the MIT License. See the `LICENSE` file for details.
