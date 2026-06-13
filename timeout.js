@@ -1,122 +1,114 @@
 (function () {
-  const script = document.currentScript;
-  const target = script.getAttribute("data-url");
-  if (!target) return console.error("EmbedPing: missing data-url");
+  const s = document.currentScript;
+  const url = s.getAttribute("data-url");
+  if (!url) return console.error("EmbedPing: missing data-url");
 
-  const position = script.getAttribute("data-position") || "bottom-right";
-  const theme = script.getAttribute("data-theme") || "auto";
-  const interval = Number(script.getAttribute("data-interval") || 5000);
+  const pos = s.getAttribute("data-position") || "bottom-right";
+  const theme = s.getAttribute("data-theme") || "auto";
+  const interval = Number(s.getAttribute("data-interval") || 4000);
+  const size = s.getAttribute("data-size") || "md";
 
-  // Create shadow DOM container
-  const container = document.createElement("div");
-  container.style.position = "fixed";
-  container.style.zIndex = "999999";
-  container.style.pointerEvents = "none";
+  const wrap = document.createElement("div");
+  wrap.style.position = "fixed";
+  wrap.style.zIndex = "999999";
+  wrap.style.pointerEvents = "none";
 
-  const posMap = {
+  const map = {
     "top-left": { top: "12px", left: "12px" },
     "top-right": { top: "12px", right: "12px" },
     "bottom-left": { bottom: "12px", left: "12px" },
     "bottom-right": { bottom: "12px", right: "12px" }
   };
-  Object.assign(container.style, posMap[position]);
+  Object.assign(wrap.style, map[pos]);
 
-  const shadow = container.attachShadow({ mode: "open" });
+  const shadow = wrap.attachShadow({ mode: "open" });
 
-  // Inject CSS
-  const style = document.createElement("style");
-  style.textContent = `
-    .badge {
-      font-family: system-ui, sans-serif;
-      font-size: 13px;
-      padding: 6px 10px;
-      border-radius: 8px;
-      background: var(--bg);
-      color: var(--fg);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-      pointer-events: auto;
-      user-select: none;
-      transition: background 0.2s, color 0.2s;
+  const css = document.createElement("style");
+  css.textContent = `
+    :host {
+      --bg-light: #fff;
+      --fg-light: #111;
+      --bg-dark: #1a1a1a;
+      --fg-dark: #f5f5f5;
+      --shadow: rgba(0,0,0,0.18);
     }
-
-    :host([theme="light"]) {
-      --bg: #ffffff;
-      --fg: #111111;
-    }
-    :host([theme="dark"]) {
-      --bg: #1a1a1a;
-      --fg: #f5f5f5;
-    }
+    :host([theme="light"]) { --bg: var(--bg-light); --fg: var(--fg-light); }
+    :host([theme="dark"]) { --bg: var(--bg-dark); --fg: var(--fg-dark); }
     :host([theme="auto"]) {
       --bg: color-mix(in srgb, #fff 60%, #000);
       --fg: #111;
     }
-
+    .badge {
+      font-family: system-ui, sans-serif;
+      font-weight: 500;
+      border-radius: 8px;
+      background: var(--bg);
+      color: var(--fg);
+      box-shadow: 0 2px 6px var(--shadow);
+      pointer-events: auto;
+      user-select: none;
+      transition: 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .sm { padding: 4px 8px; font-size: 11px; }
+    .md { padding: 6px 10px; font-size: 13px; }
+    .lg { padding: 8px 14px; font-size: 15px; }
     .green { color: #2ecc71; }
     .yellow { color: #f1c40f; }
     .red { color: #e74c3c; }
     .gray { color: #7f8c8d; }
   `;
-  shadow.appendChild(style);
+  shadow.appendChild(css);
 
-  // Badge element
   const badge = document.createElement("div");
-  badge.className = "badge gray";
+  badge.className = `badge ${size} gray`;
   badge.textContent = "…";
   shadow.appendChild(badge);
 
-  document.body.appendChild(container);
+  document.body.appendChild(wrap);
+  shadow.host.setAttribute("theme", theme);
 
-  // Ping engine
-  async function ping(url) {
-    const start = performance.now();
-
+  async function ping(u) {
+    const t = performance.now();
     try {
-      // Try HEAD
-      const res = await fetch(url, { method: "HEAD" });
-      if (res.ok) return performance.now() - start;
+      const r = await fetch(u, { method: "HEAD", cache: "no-store" });
+      if (r.ok) return performance.now() - t;
     } catch (_) {}
 
     try {
-      // Try no-cors
-      await fetch(url, { mode: "no-cors" });
-      return performance.now() - start;
+      await fetch(u, { mode: "no-cors", cache: "no-store" });
+      return performance.now() - t;
     } catch (_) {}
 
-    // Try Image fallback
-    await new Promise((resolve) => {
+    await new Promise(res => {
       const img = new Image();
-      img.onload = resolve;
-      img.onerror = resolve;
-      img.src = url + "?t=" + Date.now();
+      img.onload = res;
+      img.onerror = res;
+      img.src = u + "?t=" + Math.random();
     });
-    return performance.now() - start;
+    return performance.now() - t;
   }
 
-  function update(ms) {
+  function set(ms) {
     if (!ms || ms === Infinity) {
-      badge.className = "badge gray";
+      badge.className = `badge ${size} gray`;
       badge.textContent = "Offline";
       return;
     }
-
-    let color = "green";
-    if (ms > 150 && ms <= 500) color = "yellow";
-    if (ms > 500) color = "red";
-
-    badge.className = "badge " + color;
+    let c = "green";
+    if (ms > 150 && ms <= 500) c = "yellow";
+    if (ms > 500) c = "red";
+    badge.className = `badge ${size} ${c}`;
     badge.textContent = Math.round(ms) + "ms";
   }
 
   async function loop() {
-    const ms = await ping(target).catch(() => Infinity);
-    update(ms);
+    const ms = await ping(url).catch(() => Infinity);
+    set(ms);
     setTimeout(loop, interval);
   }
 
-  // Apply theme
-  shadow.host.setAttribute("theme", theme);
-
-  // Start
   loop();
 })();
