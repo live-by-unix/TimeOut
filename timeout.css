@@ -1,61 +1,72 @@
-/* Root theme variables */
+/* THEME VARIABLES */
+:host {
+  --bg-light: #ffffff;
+  --fg-light: #111111;
+
+  --bg-dark: #1a1a1a;
+  --fg-dark: #f5f5f5;
+
+  --shadow-light: rgba(0, 0, 0, 0.12);
+  --shadow-dark: rgba(0, 0, 0, 0.35);
+
+  --green: #2ecc71;
+  --yellow: #f1c40f;
+  --red: #e74c3c;
+  --gray: #7f8c8d;
+}
+
+/* LIGHT MODE */
 :host([theme="light"]) {
-  --bg: #ffffff;
-  --fg: #111111;
-  --shadow: rgba(0, 0, 0, 0.12);
+  --bg: var(--bg-light);
+  --fg: var(--fg-light);
+  --shadow: var(--shadow-light);
 }
 
+/* DARK MODE */
 :host([theme="dark"]) {
-  --bg: #1a1a1a;
-  --fg: #f5f5f5;
-  --shadow: rgba(0, 0, 0, 0.35);
+  --bg: var(--bg-dark);
+  --fg: var(--fg-dark);
+  --shadow: var(--shadow-dark);
 }
 
+/* AUTO MODE (smart blend) */
 :host([theme="auto"]) {
   --bg: color-mix(in srgb, #fff 60%, #000);
   --fg: #111;
   --shadow: rgba(0, 0, 0, 0.2);
 }
 
-/* Badge container */
+/* BADGE BASE */
 .badge {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 13px;
-  padding: 6px 10px;
-  border-radius: 8px;
+  font-weight: 500;
   background: var(--bg);
   color: var(--fg);
+  border-radius: 8px;
   box-shadow: 0 2px 6px var(--shadow);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   pointer-events: auto;
   user-select: none;
   transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
 }
 
-/* Status colors */
-.green {
-  color: #2ecc71;
-}
+/* SIZE PRESETS */
+.sm { padding: 4px 8px; font-size: 11px; }
+.md { padding: 6px 10px; font-size: 13px; }
+.lg { padding: 8px 14px; font-size: 15px; }
 
-.yellow {
-  color: #f1c40f;
-}
+/* STATUS COLORS */
+.green { color: var(--green); }
+.yellow { color: var(--yellow); }
+.red { color: var(--red); }
+.gray { color: var(--gray); }
 
-.red {
-  color: #e74c3c;
-}
-
-.gray {
-  color: #7f8c8d;
-}
-
-/* Optional sparkline (if added later) */
+/* OPTIONAL SPARKLINE SUPPORT */
 .sparkline {
   width: 40px;
   height: 16px;
-  display: inline-block;
-  margin-left: 4px;
-  opacity: 0.8;
+  margin-left: 6px;
+  opacity: 0.85;
 }
